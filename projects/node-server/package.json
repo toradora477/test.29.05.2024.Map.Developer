@@ -6,6 +6,8 @@
   "scripts": {
     "start": "ts-node index",
     "dev": "nodemon index",
+    "build": "if exist dist (rmdir /s /q dist && tsc) else (tsc)",
+    "buildAndStart": "if exist dist (rmdir /s /q dist && tsc && node ./dist/index) else (tsc && node ./dist/index)",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

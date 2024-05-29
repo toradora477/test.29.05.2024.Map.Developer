@@ -5,5 +5,5 @@
 .env
 .env.prod
 /config
-firebase-adminsdk.json
+/dist
 
