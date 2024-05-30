@@ -1,0 +1,20 @@
+.map-container {
+  height: 400px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  .map {
+    height: 100%;
+    width: 100%;
+  }
+
+  .leaflet-popup-content-wrapper {
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  }
+
+  .leaflet-popup-content {
+    padding: 10px;
+  }
+}

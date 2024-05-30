@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchMarkers, addMarker, removeMarker } from './actions/markerActions';
 import { RootState, AppDispatch } from './reducers/store';
 import { Map, MarkerForm, MarkerList } from './components';
+import './App.scss';
 
 const App: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();

@@ -1,4 +1,5 @@
 import React from 'react';
+import './MarkerList.scss';
 
 interface MarkerType {
   id: number;
@@ -14,11 +15,13 @@ interface MarkerListProps {
 
 const MarkerList: React.FC<MarkerListProps> = ({ markers, onDelete }) => {
   return (
-    <ul>
+    <ul className="marker-list">
       {markers.map((marker) => (
-        <li key={marker.id}>
-          <span>{marker.comment}</span>
-          <button onClick={() => onDelete(marker.id)}>Delete</button>
+        <li key={marker.id} className="marker-list-item">
+          <span className="marker-comment">{marker.comment}</span>
+          <button className="delete-button" onClick={() => onDelete(marker.id)}>
+            Delete
+          </button>
         </li>
       ))}
     </ul>
