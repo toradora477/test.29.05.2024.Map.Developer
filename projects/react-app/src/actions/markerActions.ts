@@ -12,11 +12,29 @@ import {
   REMOVE_MARKER_FAILURE,
 } from './types';
 
+const API_BASE_URL = 'http://localhost:3005';
+
+const createMarker = async (data: { lat: number; lng: number; comment: string }) => {
+  const response = await axios.post(`${API_BASE_URL}/markers/`, data);
+  return response.data;
+};
+
+const getMarkers = async () => {
+  const response = await axios.get(`${API_BASE_URL}/markers/`);
+  return response.data;
+};
+
+const deleteMarker = async (id: number) => {
+  const response = await axios.delete(`${API_BASE_URL}/markers/${id}`);
+  return response.data;
+};
+
 export const fetchMarkers = () => async (dispatch: Dispatch<MarkerActionTypes>) => {
   dispatch({ type: FETCH_MARKERS_REQUEST });
   try {
-    const response = await axios.get('/api/markers');
-    dispatch({ type: FETCH_MARKERS_SUCCESS, payload: response.data });
+    const response = await getMarkers();
+
+    dispatch({ type: FETCH_MARKERS_SUCCESS, payload: response });
   } catch (err) {
     const error = err as Error;
     dispatch({ type: FETCH_MARKERS_FAILURE, error: error.message });
@@ -25,8 +43,9 @@ export const fetchMarkers = () => async (dispatch: Dispatch<MarkerActionTypes>) 
 
 export const addMarker = (marker: Omit<Marker, 'id'>) => async (dispatch: Dispatch<MarkerActionTypes>) => {
   try {
-    const response = await axios.post('/api/markers', marker);
-    dispatch({ type: ADD_MARKER_SUCCESS, payload: response.data });
+    // const response = await axios.post('/api/markers', marker);
+    const response = await createMarker(marker);
+    dispatch({ type: ADD_MARKER_SUCCESS, payload: response });
   } catch (err) {
     const error = err as Error;
     dispatch({ type: ADD_MARKER_FAILURE, error: error.message });
@@ -35,10 +54,30 @@ export const addMarker = (marker: Omit<Marker, 'id'>) => async (dispatch: Dispat
 
 export const removeMarker = (id: number) => async (dispatch: Dispatch<MarkerActionTypes>) => {
   try {
-    await axios.delete(`/api/markers/${id}`);
+    await deleteMarker(id);
+    // await axios.delete(`/api/markers/${id}`);
     dispatch({ type: REMOVE_MARKER_SUCCESS, payload: id });
   } catch (err) {
     const error = err as Error;
     dispatch({ type: REMOVE_MARKER_FAILURE, error: error.message });
   }
 };
+
+// import axios from 'axios';
+
+// const API_BASE_URL = 'http://localhost:3005';
+
+// export const createMarker = async (data: { lat: number; lng: number; comment: string }) => {
+//   const response = await axios.post(`${API_BASE_URL}/markers/`, data);
+//   return response.data;
+// };
+
+// export const getMarkers = async () => {
+//   const response = await axios.get(`${API_BASE_URL}/markers/`);
+//   return response.data;
+// };
+
+// export const deleteMarker = async (id: number) => {
+//   const response = await axios.delete(`${API_BASE_URL}/markers/${id}`);
+//   return response.data;
+// };

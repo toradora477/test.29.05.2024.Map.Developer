@@ -2,16 +2,30 @@ import 'reflect-metadata';
 import express, { Request, Response } from 'express';
 import { Repository } from 'typeorm';
 import dotenv from 'dotenv';
+const cors = require('cors');
+const timeout = require('connect-timeout');
 
 dotenv.config();
 
-import { AppDataSource } from './src/dataSource';
-import { User } from './src/entity/User';
+const port = process.env.PORT || 3005;
 
 const app = express();
-const port = process.env.PORT || 8080;
 
-app.use(express.json());
+import { AppDataSource } from './src/dataSource';
+import { User } from './src/entity/User';
+import routesConfig from './configs/routesConfig';
+
+app.use(cors());
+app.use(express.json({ limit: '500mb' }));
+app.use(express.urlencoded({ limit: '500mb', extended: true }));
+app.use(timeout(240000));
+// app.use(require('./configs/routesConfig'));
+app.use((req, res, next) => {
+  console.log(`Запит на адресу ${req.url} методом ${req.method}`);
+  console.log('Тіло запиту:', req.body); // Виведення тіла запиту (якщо воно є)
+  next(); // Продовження обробки запиту
+});
+app.use(routesConfig);
 
 AppDataSource.initialize()
   .then(() => {
