@@ -1,8 +1,8 @@
-import { combineReducers } from 'redux';
-import markerReducer from './markerReducer';
+import { combineReducers } from '@reduxjs/toolkit';
+import markersReducer from './markersReducer';
 
 const rootReducer = combineReducers({
-  markers: markerReducer,
+  markers: markersReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

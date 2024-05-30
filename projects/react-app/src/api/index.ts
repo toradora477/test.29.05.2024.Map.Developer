@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = 'http://localhost:3005/api';
 
 export const createMarker = async (data: { lat: number; lng: number; comment: string }) => {
   const response = await axios.post(`${API_BASE_URL}/markers`, data);
