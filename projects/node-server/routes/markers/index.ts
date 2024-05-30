@@ -1,110 +1,73 @@
-import { Router, Request, Response, NextFunction } from 'express';
-// import axios from 'axios';
-// import { ExtendedError } from '../../tools';
-// import { guestJWT } from '../../middlewares/jwtAudit';
+import { Router } from 'express';
+import { AppDataSource } from '../../dataSource';
+import { Marker } from '../../entity/Marker';
+import { Like } from 'typeorm';
 
-const router: Router = Router();
+const router = Router();
 
-router.post('/', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const transportationData = {
-      status: true,
-      data: 'текст',
-    };
-
-    console.log('post');
-    console.log(transportationData);
-
-    res.status(200).json(transportationData);
-  } catch (error) {
-    next(error);
-  }
+router.post('/', async (req, res) => {
+  const { lat, lng, comment } = req.body;
+  const markerRepository = AppDataSource.getRepository(Marker);
+  const newMarker = markerRepository.create({ lat, lng, comment });
+  await markerRepository.save(newMarker);
+  console.log(newMarker);
+  res.status(201).json(newMarker);
 });
 
-router.get('/', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    // const API_NOVA_POSHTA_KEY: string = process.env.API_NOVA_POSHTA_KEY || '';
-    // const API_NOVA_POSHTA_URL: string = process.env.API_NOVA_POSHTA_URL || '';
-
-    // const response = await axios.post(API_NOVA_POSHTA_URL, {
-    //   apiKey: API_NOVA_POSHTA_KEY,
-    //   modelName: 'Address',
-    //   calledMethod: 'getWarehouses',
-    // });
-
-    // if (!response?.data?.success || !response?.data?.data) {
-    //   // throw new ExtendedError({
-    //   //   messageLog: 'Poor axios post result.',
-    //   //   messageJson: 'Помилка сервера. Не вдалося завантажити список відділень.',
-    //   // });
-    // }
-
-    // const filteredData = response.data.data.map((branch: any) => ({
-    //   Description: branch.Description,
-    //   SettlementAreaDescription: branch.SettlementAreaDescription,
-    //   SettlementDescription: branch.SettlementDescription,
-    // }));
-
-    const transportationData = {
-      status: true,
-      data: 'текст',
-    };
-
-    console.log('get');
-    console.log(transportationData);
-
-    // req.setLoggingData({
-    //   log: 'Get filtered list nova poshta branches',
-    //   operation: 'axios post api nova poshta',
-    //   dataLength: transportationData?.data?.length ?? null,
-    // });
-    res.status(200).json(transportationData);
-  } catch (error) {
-    next(error);
-  }
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { lat, lng, comment } = req.body;
+  const markerRepository = AppDataSource.getRepository(Marker);
+  const marker = await markerRepository.findOneBy({ id: parseInt(id) });
+  if (!marker) return res.status(404).json({ message: 'Marker not found' });
+  marker.lat = lat;
+  marker.lng = lng;
+  marker.comment = comment;
+  await markerRepository.save(marker);
+  console.log(marker);
+  res.json(marker);
 });
 
-router.delete('/', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    // const API_NOVA_POSHTA_KEY: string = process.env.API_NOVA_POSHTA_KEY || '';
-    // const API_NOVA_POSHTA_URL: string = process.env.API_NOVA_POSHTA_URL || '';
+router.get('/', async (req, res) => {
+  const { comment, limit, offset } = req.query;
+  const markerRepository = AppDataSource.getRepository(Marker);
 
-    // const response = await axios.post(API_NOVA_POSHTA_URL, {
-    //   apiKey: API_NOVA_POSHTA_KEY,
-    //   modelName: 'Address',
-    //   calledMethod: 'getWarehouses',
-    // });
-
-    // if (!response?.data?.success || !response?.data?.data) {
-    //   // throw new ExtendedError({
-    //   //   messageLog: 'Poor axios post result.',
-    //   //   messageJson: 'Помилка сервера. Не вдалося завантажити список відділень.',
-    //   // });
-    // }
-
-    // const filteredData = response.data.data.map((branch: any) => ({
-    //   Description: branch.Description,
-    //   SettlementAreaDescription: branch.SettlementAreaDescription,
-    //   SettlementDescription: branch.SettlementDescription,
-    // }));
-
-    const transportationData = {
-      status: true,
-      data: 'текст',
-    };
-
-    console.log('delete');
-    console.log(transportationData);
-
-    // req.setLoggingData({
-    //   log: 'Get filtered list nova poshta branches',
-    //   operation: 'axios post api nova poshta',
-    //   dataLength: transportationData?.data?.length ?? null,
-    // });
-    res.status(200).json(transportationData);
-  } catch (error) {
-    next(error);
+  const queryOptions: any = {};
+  if (comment) {
+    queryOptions.comment = Like(`%${comment}%`);
   }
+
+  const [result, total] = await markerRepository.findAndCount({
+    where: queryOptions,
+    take: limit ? parseInt(limit as string) : undefined,
+    skip: offset ? parseInt(offset as string) : undefined,
+  });
+  console.log(result);
+  res.json({ total, result });
+});
+
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  const markerRepository = AppDataSource.getRepository(Marker);
+  const marker = await markerRepository.findOneBy({ id: parseInt(id) });
+  if (!marker) return res.status(404).json({ message: 'Marker not found' });
+  console.log(marker);
+  res.json(marker);
+});
+
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  const markerRepository = AppDataSource.getRepository(Marker);
+  const result = await markerRepository.delete(id);
+  if (result.affected === 0) return res.status(404).json({ message: 'Marker not found' });
+  res.status(204).send();
+});
+
+router.get('/stats/total', async (req, res) => {
+  const markerRepository = AppDataSource.getRepository(Marker);
+  const count = await markerRepository.count();
+  console.log(count);
+  res.json({ total: count });
 });
 
 export default router;

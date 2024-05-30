@@ -12,5 +12,5 @@
     "forceConsistentCasingInFileNames": true,
     "strictPropertyInitialization": false
   },
-  "include": ["index.ts", "./src"]
+  "include": ["index.ts", "./src", "dataSource", "entity"]
 }

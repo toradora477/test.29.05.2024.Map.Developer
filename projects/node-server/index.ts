@@ -11,8 +11,8 @@ const port = process.env.PORT || 3005;
 
 const app = express();
 
-import { AppDataSource } from './src/dataSource';
-import { User } from './src/entity/User';
+import { AppDataSource } from './dataSource';
+import { Marker } from './entity/Marker';
 import requestLogger from './middlewares/requestLogger';
 import routesConfig from './configs/routesConfig';
 import handlersError from './middlewares/handlersError';
@@ -31,7 +31,7 @@ app.use(handlersError);
 AppDataSource.initialize()
   .then(() => {
     console.log('Database connected successfully');
-    const userRepository: Repository<User> = AppDataSource.getRepository(User);
+    const userRepository: Repository<Marker> = AppDataSource.getRepository(Marker);
 
     app.listen(port, () => {
       console.log(`Server is running on http://localhost:${port}`);
