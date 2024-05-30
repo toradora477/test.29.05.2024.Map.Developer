@@ -1,0 +1,9 @@
+/node_modules
+/log
+/public
+/react-app-static
+.env
+.env.prod
+/config
+/dist
+
