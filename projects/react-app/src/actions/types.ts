@@ -28,6 +28,8 @@ export const ADD_MARKER_FAILURE = 'ADD_MARKER_FAILURE';
 export const REMOVE_MARKER_SUCCESS = 'REMOVE_MARKER_SUCCESS';
 export const REMOVE_MARKER_FAILURE = 'REMOVE_MARKER_FAILURE';
 export const UPDATE_MARKER_SUCCESS = 'UPDATE_MARKER_SUCCESS';
+export const UPDATE_MARKER_REQUEST = 'UPDATE_MARKER_REQUEST';
+export const UPDATE_MARKER_FAILURE = 'UPDATE_MARKER_FAILURE';
 
 interface FetchMarkersRequestAction {
   type: typeof FETCH_MARKERS_REQUEST;
@@ -68,6 +70,15 @@ interface UpdateMarkerSuccessAction {
   payload: Marker;
 }
 
+interface UpdateMarkerRequestAction {
+  type: typeof UPDATE_MARKER_REQUEST;
+}
+
+interface UpdateMarkerFailureAction {
+  type: typeof UPDATE_MARKER_FAILURE;
+  error: string;
+}
+
 export type MarkerActionTypes =
   | FetchMarkersRequestAction
   | FetchMarkersSuccessAction
@@ -76,4 +87,6 @@ export type MarkerActionTypes =
   | AddMarkerFailureAction
   | RemoveMarkerSuccessAction
   | RemoveMarkerFailureAction
-  | UpdateMarkerSuccessAction;
+  | UpdateMarkerSuccessAction
+  | UpdateMarkerRequestAction
+  | UpdateMarkerFailureAction;

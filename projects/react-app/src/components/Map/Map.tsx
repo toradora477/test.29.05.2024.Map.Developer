@@ -18,11 +18,11 @@ const customMarkerIcon = new L.Icon({
 });
 
 const Map: React.FC<MapProps> = ({ markers }) => {
-  const position: LatLngExpression = [51.505, -0.09];
+  let position: LatLngExpression = [49.0246, 31.2859]; // Координати для центрування на Україні
 
   return (
     <div className="map-container">
-      <MapContainer center={position} zoom={13} className="map">
+      <MapContainer center={position} zoom={6} className="map">
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {markers.map((marker) => (
           <Marker key={marker.id} position={[marker.lat, marker.lng]} icon={customMarkerIcon}>

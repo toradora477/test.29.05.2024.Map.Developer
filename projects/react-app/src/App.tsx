@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMarkers, addMarker, removeMarker } from './actions/markerActions';
+import { fetchMarkers, addMarker, removeMarker, updateMarker } from './actions/markerActions';
 import { RootState, AppDispatch } from './reducers/store';
 import { Map, MarkerForm, MarkerList } from './components';
 import { Marker } from './actions/types';
@@ -13,6 +13,7 @@ const App: React.FC = () => {
   const error = useSelector((state: RootState) => state.markers.error);
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedMarker, setSelectedMarker] = useState<Marker | null>(null);
 
   useEffect(() => {
     dispatch(fetchMarkers());
@@ -32,10 +33,12 @@ const App: React.FC = () => {
   };
 
   const handleEditMarker = (id: number) => {
-    dispatch(removeMarker(id));
+    const markerToEdit = markers.find((marker) => marker.id === id);
+    if (markerToEdit) {
+      setSelectedMarker(markerToEdit);
+    }
   };
-
-  const filteredMarkers = markers.filter((marker) => marker.comment.toLowerCase().includes(searchQuery.toLowerCase()));
+  const filteredMarkers = markers.filter((marker) => marker.comment?.toLowerCase()?.includes(searchQuery?.toLowerCase()));
 
   return (
     <div className="App">
@@ -57,7 +60,7 @@ const App: React.FC = () => {
       <div className="group-bottom">
         {loading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
-        <MarkerForm onSubmit={handleAddMarker} />
+        <MarkerForm onSubmit={handleAddMarker} editMarker={selectedMarker} />
       </div>
     </div>
   );

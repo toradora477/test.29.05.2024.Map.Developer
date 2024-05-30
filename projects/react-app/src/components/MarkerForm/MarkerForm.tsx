@@ -1,15 +1,25 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, FormEvent, useEffect } from 'react';
 import './MarkerForm.scss';
+import { Marker } from '../../actions/types';
 
 interface MarkerFormProps {
-  onSubmit: (marker: { lat: number; lng: number; comment: string }) => void;
+  onSubmit: (marker: Marker) => void;
+  editMarker: Marker | null;
 }
 
-const MarkerForm: React.FC<MarkerFormProps> = ({ onSubmit }) => {
+const MarkerForm: React.FC<MarkerFormProps> = ({ onSubmit, editMarker }) => {
   const [lat, setLat] = useState('');
   const [lng, setLng] = useState('');
   const [comment, setComment] = useState('');
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (editMarker) {
+      setLat(editMarker.lat.toString());
+      setLng(editMarker.lng.toString());
+      setComment(editMarker.comment);
+    }
+  }, [editMarker]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -28,7 +38,15 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ onSubmit }) => {
     }
 
     setError('');
-    onSubmit({ lat: latitude, lng: longitude, comment });
+    const newMarker: Marker = {
+      id: editMarker ? editMarker.id : Date.now(), // Use current timestamp as ID if it's a new marker
+      lat: latitude,
+      lng: longitude,
+      comment: comment,
+      createdAt: editMarker ? editMarker.createdAt : new Date().toISOString(), // Use current time for new marker
+      updatedAt: new Date().toISOString(),
+    };
+    onSubmit(newMarker);
     setLat('');
     setLng('');
     setComment('');
@@ -61,7 +79,7 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ onSubmit }) => {
       />
       <input className="input-field" type="text" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Коментар" required />
       <button className="submit-button" type="submit">
-        Додати маркер
+        {editMarker ? 'Редагувати маркер' : 'Додати маркер'}
       </button>
     </form>
   );
