@@ -8,6 +8,7 @@ import {
   ADD_MARKER_FAILURE,
   REMOVE_MARKER_SUCCESS,
   REMOVE_MARKER_FAILURE,
+  UPDATE_MARKER_SUCCESS,
 } from '../actions/types';
 
 const initialState: MarkerState = {
@@ -32,6 +33,13 @@ const markersReducer = (state = initialState, action: MarkerActionTypes): Marker
       return { ...state, markers: state.markers.filter((marker) => marker.id !== action.payload) };
     case REMOVE_MARKER_FAILURE:
       return { ...state, error: action.error };
+    case UPDATE_MARKER_SUCCESS:
+      return {
+        ...state,
+        markers: state.markers.map((marker) =>
+          marker.id === action.payload.id ? { ...action.payload, updatedAt: new Date().toISOString() } : marker,
+        ),
+      };
     default:
       return state;
   }

@@ -16,13 +16,14 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { lat, lng, comment } = req.body;
+  const { lat, lng, comment, updatedAt } = req.body;
   const markerRepository = AppDataSource.getRepository(Marker);
   const marker = await markerRepository.findOneBy({ id: parseInt(id) });
   if (!marker) return res.status(404).json({ message: 'Marker not found' });
   marker.lat = lat;
   marker.lng = lng;
   marker.comment = comment;
+  marker.updatedAt = updatedAt;
   await markerRepository.save(marker);
   console.log(marker);
   res.json(marker);

@@ -13,6 +13,13 @@ export interface MarkerState {
   error: string | null;
 }
 
+export interface MarkerType {
+  id: number;
+  lat: number;
+  lng: number;
+  comment: string;
+}
+
 export const FETCH_MARKERS_REQUEST = 'FETCH_MARKERS_REQUEST';
 export const FETCH_MARKERS_SUCCESS = 'FETCH_MARKERS_SUCCESS';
 export const FETCH_MARKERS_FAILURE = 'FETCH_MARKERS_FAILURE';
@@ -20,6 +27,7 @@ export const ADD_MARKER_SUCCESS = 'ADD_MARKER_SUCCESS';
 export const ADD_MARKER_FAILURE = 'ADD_MARKER_FAILURE';
 export const REMOVE_MARKER_SUCCESS = 'REMOVE_MARKER_SUCCESS';
 export const REMOVE_MARKER_FAILURE = 'REMOVE_MARKER_FAILURE';
+export const UPDATE_MARKER_SUCCESS = 'UPDATE_MARKER_SUCCESS';
 
 interface FetchMarkersRequestAction {
   type: typeof FETCH_MARKERS_REQUEST;
@@ -55,6 +63,11 @@ interface RemoveMarkerFailureAction {
   error: string;
 }
 
+interface UpdateMarkerSuccessAction {
+  type: typeof UPDATE_MARKER_SUCCESS;
+  payload: Marker;
+}
+
 export type MarkerActionTypes =
   | FetchMarkersRequestAction
   | FetchMarkersSuccessAction
@@ -62,4 +75,5 @@ export type MarkerActionTypes =
   | AddMarkerSuccessAction
   | AddMarkerFailureAction
   | RemoveMarkerSuccessAction
-  | RemoveMarkerFailureAction;
+  | RemoveMarkerFailureAction
+  | UpdateMarkerSuccessAction;

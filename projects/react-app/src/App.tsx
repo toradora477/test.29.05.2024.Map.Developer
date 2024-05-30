@@ -31,6 +31,10 @@ const App: React.FC = () => {
     dispatch(removeMarker(id));
   };
 
+  const handleEditMarker = (id: number) => {
+    dispatch(removeMarker(id));
+  };
+
   const filteredMarkers = markers.filter((marker) => marker.comment.toLowerCase().includes(searchQuery.toLowerCase()));
 
   return (
@@ -44,7 +48,7 @@ const App: React.FC = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <MarkerList markers={filteredMarkers} onDelete={handleDeleteMarker} />
+          <MarkerList onEdit={handleEditMarker} markers={filteredMarkers} onDelete={handleDeleteMarker} />
         </div>
         <div className="map-container">
           <Map markers={filteredMarkers} />

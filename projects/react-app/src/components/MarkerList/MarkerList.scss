@@ -30,6 +30,15 @@
     cursor: pointer;
   }
 
+  .edit-button {
+    background-color: #d79428;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
   .delete-button:hover {
     background-color: #cc0000;
   }
