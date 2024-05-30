@@ -4,10 +4,11 @@ import { Marker } from '../../actions/types';
 
 interface MarkerFormProps {
   onSubmit: (marker: Marker) => void;
+  onEdit: (marker: Marker) => void;
   editMarker: Marker | null;
 }
 
-const MarkerForm: React.FC<MarkerFormProps> = ({ onSubmit, editMarker }) => {
+const MarkerForm: React.FC<MarkerFormProps> = ({ onSubmit, editMarker, onEdit }) => {
   const [lat, setLat] = useState('');
   const [lng, setLng] = useState('');
   const [comment, setComment] = useState('');
@@ -39,14 +40,14 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ onSubmit, editMarker }) => {
 
     setError('');
     const newMarker: Marker = {
-      id: editMarker ? editMarker.id : Date.now(), // Use current timestamp as ID if it's a new marker
+      id: editMarker ? editMarker.id : Date.now(),
       lat: latitude,
       lng: longitude,
       comment: comment,
-      createdAt: editMarker ? editMarker.createdAt : new Date().toISOString(), // Use current time for new marker
+      createdAt: editMarker ? editMarker.createdAt : new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    onSubmit(newMarker);
+    editMarker ? onEdit(newMarker) : onSubmit(newMarker);
     setLat('');
     setLng('');
     setComment('');

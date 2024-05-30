@@ -32,12 +32,24 @@ const App: React.FC = () => {
     dispatch(removeMarker(id));
   };
 
-  const handleEditMarker = (id: number) => {
+  const onEdit = (id: number) => {
     const markerToEdit = markers.find((marker) => marker.id === id);
     if (markerToEdit) {
       setSelectedMarker(markerToEdit);
     }
   };
+
+  const handleEditMarker = (marker: Marker) => {
+    const updatedMarker: Marker = {
+      ...marker,
+      updatedAt: new Date().toISOString(),
+    };
+
+    if (selectedMarker) {
+      dispatch(updateMarker(selectedMarker.id, updatedMarker));
+    }
+  };
+
   const filteredMarkers = markers.filter((marker) => marker.comment?.toLowerCase()?.includes(searchQuery?.toLowerCase()));
 
   return (
@@ -51,7 +63,7 @@ const App: React.FC = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <MarkerList onEdit={handleEditMarker} markers={filteredMarkers} onDelete={handleDeleteMarker} />
+          <MarkerList onEdit={onEdit} markers={filteredMarkers} onDelete={handleDeleteMarker} />
         </div>
         <div className="map-container">
           <Map markers={filteredMarkers} />
@@ -60,7 +72,7 @@ const App: React.FC = () => {
       <div className="group-bottom">
         {loading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
-        <MarkerForm onSubmit={handleAddMarker} editMarker={selectedMarker} />
+        <MarkerForm onSubmit={handleAddMarker} editMarker={selectedMarker} onEdit={handleEditMarker} />
       </div>
     </div>
   );

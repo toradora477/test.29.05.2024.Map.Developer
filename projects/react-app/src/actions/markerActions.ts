@@ -63,31 +63,15 @@ export const removeMarker = (id: number) => async (dispatch: Dispatch<MarkerActi
   }
 };
 
-// const updateMarkerApi = async (id: number, data: Omit<Marker, 'id'>) => {
-//   const response = await axios.put(`${API_BASE_URL}/markers/${id}`, data);
-//   return response.data;
-// };
-
-// export const updateMarker = (id: number, markerData: Omit<Marker, 'id'>) => async (dispatch: Dispatch<MarkerActionTypes>) => {
-//   dispatch({ type: UPDATE_MARKER_REQUEST });
-//   try {
-//     const response = await updateMarkerApi(id, markerData);
-//     dispatch({ type: UPDATE_MARKER_SUCCESS, payload: response });
-//   } catch (err) {
-//     const error = err as Error;
-//     dispatch({ type: UPDATE_MARKER_FAILURE, error: error.message });
-//   }
-// };
-
-const updateMarkerApi = async (id: number) => {
-  const response = await axios.put(`${API_BASE_URL}/markers/${id}`, {});
+const updateMarkerApi = async (id: number, data: Omit<Marker, 'id'>) => {
+  const response = await axios.put(`${API_BASE_URL}/markers/${id}`, data);
   return response.data;
 };
 
-export const updateMarker = (id: number) => async (dispatch: Dispatch<MarkerActionTypes>) => {
+export const updateMarker = (id: number, markerData: Omit<Marker, 'id'>) => async (dispatch: Dispatch<MarkerActionTypes>) => {
   dispatch({ type: UPDATE_MARKER_REQUEST });
   try {
-    const response = await updateMarkerApi(id);
+    const response = await updateMarkerApi(id, markerData);
     dispatch({ type: UPDATE_MARKER_SUCCESS, payload: response });
   } catch (err) {
     const error = err as Error;
