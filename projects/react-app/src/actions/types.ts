@@ -3,6 +3,8 @@ export interface Marker {
   lat: number;
   lng: number;
   comment: string;
+  createdAt: string | Date;
+  updatedAt: string | Date;
 }
 
 export interface MarkerState {

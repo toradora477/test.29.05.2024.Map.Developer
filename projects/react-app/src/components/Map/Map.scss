@@ -1,5 +1,6 @@
 .map-container {
   height: 400px;
+  width: 600px;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -9,12 +10,25 @@
     width: 100%;
   }
 
+  position: relative;
+
+  .leaflet-marker-icon {
+    img {
+      filter: brightness(0) invert(1); /* Змінюємо колір маркера на жовтий */
+    }
+  }
   .leaflet-popup-content-wrapper {
-    border-radius: 5px;
+    background-color: rgb(255, 166, 0);
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+    border-radius: 20px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   }
 
   .leaflet-popup-content {
+    color: white;
     padding: 10px;
   }
 }

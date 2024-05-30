@@ -1,14 +1,24 @@
 .marker-list {
   list-style: none;
   padding: 0;
+  margin: 0;
 
   .marker-list-item {
+    background-color: rgb(255, 166, 0);
+    border-radius: 8px;
+    padding: 15px;
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   }
 
   .marker-comment {
-    display: block;
-    margin-bottom: 5px;
+    margin-left: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    flex: 1;
   }
 
   .delete-button {
@@ -18,5 +28,9 @@
     padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
+  }
+
+  .delete-button:hover {
+    background-color: #cc0000;
   }
 }

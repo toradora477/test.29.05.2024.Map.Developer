@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchMarkers, addMarker, removeMarker } from './actions/markerActions';
 import { RootState, AppDispatch } from './reducers/store';
 import { Map, MarkerForm, MarkerList } from './components';
+import { Marker } from './actions/types';
 import './App.scss';
 
 const App: React.FC = () => {
@@ -16,7 +17,12 @@ const App: React.FC = () => {
   }, [dispatch]);
 
   const handleAddMarker = (marker: { lat: number; lng: number; comment: string }) => {
-    dispatch(addMarker(marker));
+    const newMarker: Omit<Marker, 'id'> = {
+      ...marker,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    dispatch(addMarker(newMarker));
   };
 
   const handleDeleteMarker = (id: number) => {
@@ -24,13 +30,25 @@ const App: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>Map with Markers</h1>
-      <Map markers={markers} />
-      <MarkerForm onSubmit={handleAddMarker} />
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
-      <MarkerList markers={markers} onDelete={handleDeleteMarker} />
+    <div className="App">
+      <div className="group-top">
+        <div className="info-panel">
+          <input type="text" placeholder="Пошук" className="search-marker-input" />
+          <MarkerList markers={markers} onDelete={handleDeleteMarker} />
+        </div>
+        <div className="map-container">
+          <Map markers={markers} />
+        </div>
+      </div>
+      {/* 
+      <button  onClick={() => console.log('Add marker clicked')}>
+        Add Marker
+      </button> */}
+      <div className="group-bottom">
+        {loading && <p>Loading...</p>}
+        {error && <p>Error: {error}</p>}
+        <MarkerForm onSubmit={handleAddMarker} />
+      </div>
     </div>
   );
 };

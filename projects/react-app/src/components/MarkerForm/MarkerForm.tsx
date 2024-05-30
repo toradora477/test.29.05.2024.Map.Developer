@@ -42,7 +42,7 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ onSubmit }) => {
         type="number"
         value={lat}
         onChange={(e) => setLat(e.target.value)}
-        placeholder="Latitude"
+        placeholder="Широта"
         min="-90"
         max="90"
         step="0.000001"
@@ -53,15 +53,15 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ onSubmit }) => {
         type="number"
         value={lng}
         onChange={(e) => setLng(e.target.value)}
-        placeholder="Longitude"
+        placeholder="Довгота"
         min="-180"
         max="180"
         step="0.000001"
         required
       />
-      <input className="input-field" type="text" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Comment" required />
+      <input className="input-field" type="text" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Коментар" required />
       <button className="submit-button" type="submit">
-        Add Marker
+        Додати маркер
       </button>
     </form>
   );
