@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './MarkerList.scss';
 import { map_point_white } from '../../images';
 import { Marker } from '../../actions/types';
