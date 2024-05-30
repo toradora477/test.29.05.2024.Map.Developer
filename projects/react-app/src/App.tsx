@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMarkers, addMarker, removeMarker } from './actions/markerActions';
 import { RootState, AppDispatch } from './reducers/store';
@@ -11,6 +11,8 @@ const App: React.FC = () => {
   const markers = useSelector((state: RootState) => state.markers.markers);
   const loading = useSelector((state: RootState) => state.markers.loading);
   const error = useSelector((state: RootState) => state.markers.error);
+
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     dispatch(fetchMarkers());
@@ -29,21 +31,25 @@ const App: React.FC = () => {
     dispatch(removeMarker(id));
   };
 
+  const filteredMarkers = markers.filter((marker) => marker.comment.toLowerCase().includes(searchQuery.toLowerCase()));
+
   return (
     <div className="App">
       <div className="group-top">
         <div className="info-panel">
-          <input type="text" placeholder="Пошук" className="search-marker-input" />
-          <MarkerList markers={markers} onDelete={handleDeleteMarker} />
+          <input
+            type="text"
+            placeholder="Пошук"
+            className="search-marker-input"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <MarkerList markers={filteredMarkers} onDelete={handleDeleteMarker} />
         </div>
         <div className="map-container">
-          <Map markers={markers} />
+          <Map markers={filteredMarkers} />
         </div>
       </div>
-      {/* 
-      <button  onClick={() => console.log('Add marker clicked')}>
-        Add Marker
-      </button> */}
       <div className="group-bottom">
         {loading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
