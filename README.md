@@ -2,7 +2,6 @@
 
 This monorepo is the home for projects related to the Test.
 
-
 react app:
 Users work here, they can see the map from the mark. add, remove, etc.
 

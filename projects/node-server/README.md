@@ -1,9 +1,9 @@
-# CRM of the company: [Адвокатське об’єднання «Захист»](https://zahist.in.ua/)
+# Backend part for Test:
 
 ### Technologies
 
 ![TypeScript](https://img.shields.io/badge/-TypeScript-blue)
-![Node.js](https://img.shields.io/badge/-Node.js-brightgreen)
+![Node.js](https://img.shields.io/badge/-Node.js-red)
 ![Express.js](https://img.shields.io/badge/-Express.js-white)
 ![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-darkgreen)
 

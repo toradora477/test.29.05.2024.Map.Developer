@@ -4,7 +4,7 @@
 
 ![TypeScript](https://img.shields.io/badge/-TypeScript-blue)
 ![React.js](https://img.shields.io/badge/-React.js-blue)
-![Redux](https://img.shields.io/badge/-Redux-darkviolet)
+![Redux](https://img.shields.io/badge/-Redux-red)
 ![Leaflet](https://img.shields.io/badge/-Leaflet-grean)
 
 ### Installation instructions
